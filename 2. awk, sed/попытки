@@ -1,0 +1,62 @@
+sort hw2.txt | 
+for ((i=1; i<$(wc -l hw2.txt | awk -F " " '{print $1}'); i++))
+do
+
+ip=$(sed -n $i hw2.txt | awk '{print $1}');
+
+if [i -eq 1]
+then
+sed 's/ [0-9]?? "." [0-9]?? "." [0-9]?? "." [0-9]?? / "ip $i"
+else
+
+	
+fi;
+
+sed 's/ [0-9]?? "." [0-9]?? "." [0-9]?? "." [0-9]?? / "ip $
+
+done
+
+
+
+
+ipc=1; while read line; do sed 's/ ^ *"." *"." *"." [0-9]??/"ip$ipc"'; done < hw2.txt
+
+ipc=1; while read line; do sed 's/^[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\s/ip $ipc /'; done < hw2.txt
+
+
+
+
+
+
+				sed 's/^[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\s/ip' hw2.txt
+				
+				
+ipc=1; while read line; do echo "ip" $ipc; sed 's/^[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\s//'; $ipc+=1; done < hw2.txt
+
+ipc=1; while read line; do echo "ip" $ipc; sed '$ipc p' | sed 's/^[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\s//'; $ipc+=1; done < hw2.txt
+
+
+
+
+sort hw2.txt
+i=1
+while read line
+do
+	echo "$line" | cut -d " " -f 1 > ip.txt;
+	ipa=$(cat ip.txt);
+	if [i <2]
+		then
+			sed "s/s/^[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\s/ip ${i}";
+			ipb=$(cat ip.txt);
+		else
+		if [$ipa==$ipb]
+		then
+			sed "s/s/^[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\s/ip ${i}"
+		else
+			$i+=1;
+			sed "s/s/^[0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\s/ip ${i}";
+			ipb=$(cat ip.txt);
+		fi;
+	fi;
+done < hw2.txt
+	
