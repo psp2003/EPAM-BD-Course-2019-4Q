@@ -1,0 +1,25 @@
+Task: Users and Groups
+Create a group sales with GID 4000 and users bob, alice, eve having primary group sales.
+	change PASS_MAX_DAYS *->30 in /etc/login.defs
+	groupadd -g 4000 sales
+	useradd -g sales bob
+	useradd -g sales alice
+	useradd -g sales eve
+Change user passwords.
+	passwd alice
+ 	passwd bob
+ 	passwd eve
+All new accounts should change their passwords every 30 days.
+	chage -M 30 alice
+	chage -M 30 bob
+	chage -M 30 eve
+All accounts from sales group should expire in 90 days.
+	chage -E $(date -d +90days +%Y-%m-%d) alice
+	chage -E $(date -d +90days +%Y-%m-%d) bob
+	chage -E $(date -d +90days +%Y-%m-%d) eve
+Bob should change his password every 15 days.
+	chage -M 15 bob
+Make users change their passwords after the first login.
+	Ответ: chage -d 0 alice
+	chage -d 0 bob
+	chage -d 0 eve

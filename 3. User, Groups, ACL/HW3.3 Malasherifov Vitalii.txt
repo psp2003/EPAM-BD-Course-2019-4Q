@@ -1,0 +1,29 @@
+Task: ACL
+Create directory /shares/cases with 2 files in it: murders.txt and moriarty.txt.
+	su
+	mkdir /shares/cases -p
+	touch /shares/cases/{murders,moriarty}.txt
+Create group bakerstreet with users watson.
+	groupadd bakerstreet
+	useradd -g bakerstreet holmes
+	useradd -g bakerstreet watson
+Create group scotlandyard with users lestrade, gregson, jones.
+	groupadd scotlandyard 
+	useradd -g scotlandyard lestrade
+	useradd -g scotlandyard gregson
+	useradd -g scotlandyard jones
+Assign secure passwords for users.
+	passwd holmes #log=pass
+	passwd watson
+	passwd lestrade
+	passwd gregson
+	passwd jones
+bakerstreet should have read and write access to /shares/cases.
+	setfacl -m g:bakerstreet:rwx /shares/cases/*
+scotlandyard should have read and write access only to murders.txt and moriarty.txt files. But jones should only have a read access.
+	setfacl -m g:scotlandyard:rwx /shares/cases/{murders,moriarty}.txt
+	setfacl -m g:scotlandyard:rx /shares/cases
+	setfacl -m u:jones:rx /shares/cases/{murders,moriarty}.txt
+Future files should inherit permissions mentioned above.
+	
+Login as every user and make sure setthat all permissions are set correctly.

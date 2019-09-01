@@ -1,0 +1,14 @@
+Task: Controlling access to files with Linux file system permissions
+Create directory /home/students, where all 3 users can work with files.
+	mkdir /home/students
+ 	chown -R :students /home/students
+There should be only user and group access, with permissions to create and delete files.
+	chmod 2770 /home/students # 2 -> Sticky bit, 660 only for files
+Group students should be owner of all future files.
+
+Task: Create directory /data1.
+Anyone should be able to read/write and execute files in this directory.
+But only the user created a file, can then delete it.
+	Answer: login 'root' user
+		mkdir /data1/
+		chmod 700 /data1
