@@ -19,11 +19,13 @@ Assign secure passwords for users.
 	passwd gregson
 	passwd jones
 bakerstreet should have read and write access to /shares/cases.
+	Reset all ACL-rules: setfacl -bR /shares/cases/
 	setfacl -m g:bakerstreet:rwx /shares/cases/*
 scotlandyard should have read and write access only to murders.txt and moriarty.txt files. But jones should only have a read access.
 	setfacl -m g:scotlandyard:rwx /shares/cases/{murders,moriarty}.txt
 	setfacl -m g:scotlandyard:rx /shares/cases
 	setfacl -m u:jones:rx /shares/cases/{murders,moriarty}.txt
 Future files should inherit permissions mentioned above.
+	setfacl -m d:group:bakerstreet:rwx /shares/cases/
+Login as every user and make sure setthat all permissions are set correctly. 
 	
-Login as every user and make sure setthat all permissions are set correctly.
