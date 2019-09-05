@@ -1,0 +1,58 @@
+Processes
+1. Run a sleep command three times at different intervals
+	sleep 200 & # & => start at background
+	[vit@vm01 ~]$ sleep 200 &
+		[1] 7726
+	[vit@vm01 ~]$ sleep 201 &
+		[2] 7727
+	[vit@vm01 ~]$ sleep 202 &
+		[3] 7728
+2. Send a SIGSTOP signal to all of them in three different ways.
+		#value of SIGSTOP: 19
+		kill -s 19 7726
+		kill -STOP 7727
+		kill -SIGSTOP 7728
+			[vit@vm01 ~]$ kill -s 19 7726
+			[vit@vm01 ~]$ kill -STOP 7727
+			[1]+  Stopped                 sleep 200
+			[vit@vm01 ~]$ kill -SIGSTOP 7728
+			[2]+  Stopped                 sleep 201
+			[vit@vm01 ~]$ ^C
+3. Check their statuses with a job command
+		jobs
+			[vit@vm01 ~]$ jobs
+			[1]   Stopped                 sleep 200
+			[2]-  Stopped                 sleep 201
+			[3]+  Stopped                 sleep 202
+4. Terminate one of them. (Any)
+	kill -SIGTERM %1
+	[vit@vm01 ~]$ kill -SIGTERM %1
+		[1]   Stopped                 sleep 200
+5. To other send a SIGCONT in two different ways.
+	kill -s 18 %2
+	kill -SIGCONT %3
+6. Kill one by PID and the second one by job ID
+	#renew jobs queue (PID 7780/7781)
+	sleep 2000
+	sleep 2001
+	kill 'PID'
+	kill %'JID'
+		[vit@vm01 ~]$ sleep 2000 &
+		[1] 7780
+		[vit@vm01 ~]$ sleep 2001 &
+		[2] 7781
+		[vit@vm01 ~]$ kill -SIGTERM %1
+		[vit@vm01 ~]$ sleep 2000 &
+		[1] 7780
+		[vit@vm01 ~]$ sleep 2001 &
+		[2] 7781
+		[vit@vm01 ~]$ kill 7780
+		[vit@vm01 ~]$ ps
+		  PID TTY          TIME CMD
+		 6043 pts/0    00:00:00 bash
+		 7781 pts/0    00:00:00 sleep
+		 7782 pts/0    00:00:00 ps
+		[1]-  Terminated              sleep 2000
+		[vit@vm01 ~]$ jobs
+		[2]+  Running                 sleep 2001 &
+		[vit@vm01 ~]$ kill %2	
