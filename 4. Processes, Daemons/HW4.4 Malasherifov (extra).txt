@@ -1,0 +1,32 @@
+на прошлой лекции я забыл рассказать про команду lsof, поэтому домашнее задание по ней я не могу дать как обязательное, но при этом все равно советую вам изучить ее
+lsof
+1. Run a sleep command, redirect stdout and stderr into two different files (both of them will be empty).
+	sleep 3000 1> /home/vit/sleep1 2> /home/vit/sleep2 &
+2. Find with the lsof command which files this process uses, also find from which file it gain stdout
+		[vit@vm01 ~]$ sleep 3000 1>~/sleep1 2>sleep2 &
+		[1] 5117
+		[vit@vm01 ~]$ ps
+		  PID TTY          TIME CMD
+		 4362 pts/0    00:00:00 bash
+		 5117 pts/0    00:00:00 sleep
+		 5118 pts/0    00:00:00 ps
+	#PID of sleep - 5117
+		[vit@vm01 ~]$ lsof -p 5117
+		COMMAND  PID USER   FD   TYPE DEVICE  SIZE/OFF     NODE NAME
+		sleep   5117  vit  cwd    DIR  253,0      4096  5847861 /home/vit
+		sleep   5117  vit  rtd    DIR  253,0       251       64 /
+		sleep   5117  vit  txt    REG  253,0     33216 12648529 /usr/bin/sleep
+		sleep   5117  vit  mem    REG  253,0 106075056    82677 /usr/lib/locale/locale-archive
+		sleep   5117  vit  mem    REG  253,0   2151672    82618 /usr/lib64/libc-2.17.so
+		sleep   5117  vit  mem    REG  253,0    163400    82611 /usr/lib64/ld-2.17.so
+		sleep   5117  vit    0u   CHR  136,0       0t0        3 /dev/pts/0
+		sleep   5117  vit    1w   REG  253,0         0  5646726 /home/vit/sleep1 #<-stdout
+		sleep   5117  vit    2w   REG  253,0         0  5647601 /home/vit/sleep2
+	
+	FD - File Descriptor
+	w = write
+	1w - stdout
+	2w - stderr
+	
+3. List all ESTABLISHED TCP connections ONLY with lsof
+	lsof -i TCP -s TCP:ESTABLISHED #?????

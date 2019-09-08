@@ -1,0 +1,75 @@
+systemd
+1. Write two daemons: one should be a simple daemon and do sleep 10 after a start and then do echo 1 > /tmp/homework, the second one should be oneshot and do echo 2 > /tmp/homework without any sleep
+	First daemon:
+		Create file ~/1d.sh
+			#!/bin/bash
+			sleep 10
+			echo 1 > /tmp/homework
+		Create file /etc/systemd/system/1d.service:
+			[Unit]
+			Description=First Daemon
+			[Service]
+			ExecStart=/home/vit/1d.sh			
+	Second daemon:
+		Create file ~/2d.sh
+			#!/bin/bash
+			echo 2 > /tmp/homework
+		Create file /etc/systemd/system/2d.service
+			[Unit]
+			Description=Second Daemon
+			[Service]
+			Type=oneshot
+			ExecStart=/home/vit/2d.sh
+	Check rights of .sh files:
+		cd /home/vit
+		ll | grep .sh
+	Change rights (if non-executable)
+		chmod -c 777 .sh
+2. Make the second depended on the first one (should start only after the first)
+	Change file /etc/systemd/system/2d.service
+			[Unit]
+			Description=Second Daemon
+			Requires=1d.service
+			After=1d.service
+			[Service]
+			Type=oneshot
+			ExecStart=/home/vit/2d.sh
+3. Write a timer for the second one and configure it to run on 01.01.2019 at 00:00
+	Create timer file: /etc/systemd/system/2d.timer
+		[Unit]
+		Description=Second daemon timer
+		[Timer]
+		OnCalendar=2019-01-01 00:00
+		Persistent=true
+
+4. Start all daemons and timer, check their statuses, timer list and /tmp/homework
+	Start:
+		systemctl start 1d.service 2d.service 2d.timer
+	Check:
+		[root@vm01 vit]# systemctl status 1d.service 2d.service 2d.timer
+		● 1d.service - First Daemon
+		   Loaded: loaded (/etc/systemd/system/1d.service; static; vendor preset: disabled)
+		   Active: inactive (dead) since Fri 2019-09-06 21:41:52 MSK; 340ms ago
+		  Process: 14003 ExecStart=/home/vit/1d.sh (code=exited, status=0/SUCCESS)
+		 Main PID: 14003 (code=exited, status=0/SUCCESS)
+
+		Sep 06 21:41:42 vm01.localdomain systemd[1]: Started First Daemon.
+
+		● 2d.service - Second Daemon
+		   Loaded: loaded (/etc/systemd/system/2d.service; static; vendor preset: disabled)
+		   Active: inactive (dead) since Fri 2019-09-06 21:41:42 MSK; 10s ago
+		  Process: 14004 ExecStart=/home/vit/2d.sh (code=exited, status=0/SUCCESS)
+		 Main PID: 14004 (code=exited, status=0/SUCCESS)
+
+		Sep 06 21:41:42 vm01.localdomain systemd[1]: Starting Second Daemon...
+		Sep 06 21:41:42 vm01.localdomain systemd[1]: Started Second Daemon.
+
+		● 2d.timer - 2nd service timer
+		   Loaded: loaded (/etc/systemd/system/2d.timer; static; vendor preset: disabled)
+		   Active: active (elapsed) since Fri 2019-09-06 21:34:43 MSK; 7min ago
+
+		[root@vm01 tmp]# cat /tmp/homework 
+		1
+5. Stop all daemons and timer
+	systemctl stop 1d.service 2d.service 2d.timer
+	.
