@@ -1,0 +1,23 @@
+# Following tasks should be executed on your localhost as you'll need root privileges
+2.1. Imagine your localhost has been relocated to Havana. Change the time zone on the localhost to Havana and verify the time zone has been changed properly. (may be multiple commands)
+	tzselect -> Americas -> Cuba -> Yes
+2.2. Find all systemd journal messages on localhost, that were recorded in the last 50 minutes and originate from a system service started with user id 81. (single command)
+	journalctl _UID=81 --since "50 minutes ago" 
+	[root@vm01 vit]# journalctl _UID=81 --since "50 minutes ago"
+	-- Logs begin at Tue 2019-09-10 18:03:47 MSK, end at Tue 2019-09-10 18:20:01 MSK. --
+	Sep 10 18:03:54 vm01.localdomain dbus[2838]: [system] Activating via systemd: service name='org.freedesktop.Polic
+	Sep 10 18:03:54 vm01.localdomain dbus[2838]: [system] Successfully activated service 'org.freedesktop.PolicyKit1'
+	Sep 10 18:03:55 vm01.localdomain dbus[2838]: [system] Activating via systemd: service name='org.freedesktop.hostn
+	Sep 10 18:03:55 vm01.localdomain dbus[2838]: [system] Successfully activated service 'org.freedesktop.hostname1'
+	Sep 10 18:03:55 vm01.localdomain dbus[2838]: [system] Activating via systemd: service name='org.freedesktop.nm_di
+	Sep 10 18:03:55 vm01.localdomain dbus[2838]: [system] Successfully activated service 'org.freedesktop.nm_dispatch
+	Sep 10 18:04:05 vm01.localdomain dbus[2838]: [system] Activating via systemd: service name='org.freedesktop.UPowe
+	Sep 10 18:04:05 vm01.localdomain dbus[2838]: [system] Successfully activated service 'org.freedesktop.UPower'
+	Sep 10 18:04:06 vm01.localdomain dbus[2838]: [system] Activating via systemd: service name='org.freedesktop.local
+	...
+2.3. Configure rsyslogd by adding a rule to the newly created configuration file /etc/rsyslog.d/auth-errors.conf to log all security and authentication messages with the priority alert and higher to the /var/log/auth-errors file. Test the newly added log directive with the logger command. (multiple commands)
+	[root@vm01 vit]# nano /etc/rsyslog.d/auth-errors.conf
+	[root@vm01 vit]# systemctl restart rsyslog.service
+	[root@vm01 vit]# logger -p authpriv.alert test
+	[root@vm01 vit]# cat /var/log/auth-errors 
+	Sep 10 18:30:34 vm01 vit: test
