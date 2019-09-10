@@ -13,3 +13,6 @@ Tasks
   - HW4.2 Malasherifov Vitalii - Task: systemd
   - HW4.3 Malasherifov Vitalii - Task: cron/anacron
   - HW4.4 Malasherifov Vitalii - Task: lsof (extra)
+## 5. SSH, Logging
+  - HW5.1 Malasherifov Vitalii - Task: SSH
+  - HW5.2 Malasherifov Vitalii - Task: Logging
