@@ -16,3 +16,5 @@ Tasks
 ## 5. SSH, Logging
   - HW5.1 Malasherifov Vitalii - Task: SSH
   - HW5.2 Malasherifov Vitalii - Task: Logging
+## 7. Bash
+  - HW7.1 Malasherifov Vitalii - Task: 1 & 2

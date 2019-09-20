@@ -1,0 +1,50 @@
+Task 1
+Copy text of this task into a file. Using only grep get words which have more than 5 letters and have no any other symbols.
+	[vit@vm01 ~]$ grep -o -E '\w{5,}' hw71 
+	Using
+	words
+	which
+	letters
+	other
+	symbols
+Task 2
+Create a text file with the following lines:
+Moscow
+Saint-Petersburg
+Novosibirsk
+Yekaterinburg
+Nizhny Novgorod
+Kazan
+Chelyabinsk
+Omsk
+Samara
+Rostov-on-Don
+Ufa
+Krasnoyarsk
+Perm
+Voronezh
+Volgograd
+Write a script which read a file by lines and put line into an array only if it doesn't contain "a" letter. Print the array after this and its length.
+
+	#!/bin/bash
+	file="hw62"
+	regex="\w[a]"
+	while read line;
+	do if ! [[ $line =~ $regex ]]; then
+			arr=("${arr[@]}" "$line");
+			echo $line
+			fi
+	done <$file
+	echo ${#arr[@]}
+	
+	change permissions if req. (to 777)
+	
+	[root@vm01 vit]# ./hw62.sh 
+	Moscow
+	Novosibirsk
+	Nizhny Novgorod
+	Omsk
+	Rostov-on-Don
+	Perm
+	Voronezh
+	7
