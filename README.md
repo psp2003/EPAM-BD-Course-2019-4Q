@@ -20,3 +20,5 @@ Tasks
   - HW7.1 Malasherifov Vitalii - Task: 1 & 2
 ## 8. Updating
   - HW8.1 Malasherifov Vitalii - Task 1 & 2
+## 9. Partitions, LVM
+  - HW9.1 Malasherifov Vitalii - Task 1 & 2(uc)
