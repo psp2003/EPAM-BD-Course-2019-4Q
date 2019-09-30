@@ -145,7 +145,7 @@ Also imagine your system started experiencing RAM leak in one of the application
 2.3. Extend the volume group (VG) of your root device using your newly created PV
 	[root@vm01 vit]# vgextend centos_vm01 /dev/sdc3
 2.4. Extend your root logical volume (LV) by 1GB, leaving other 1GB unassigned
-	root@vm01 vit]# lvextend -L +1G /dev/centos_vm01/root 
+	[root@vm01 vit]# lvextend -L +1G /dev/centos_vm01/root 
 	  Size of logical volume centos_vm01/root changed from <6.20 GiB (1586 extents) to <7.20 GiB (1842 extents).
 	  Logical volume centos_vm01/root successfully resized.
 	[root@vm01 vit]# lsblk 
@@ -164,8 +164,11 @@ Also imagine your system started experiencing RAM leak in one of the application
 	  └─centos_vm01-root 253:0    0  7.2G  0 lvm  /
 	sr0                   11:0    1 1024M  0 rom  
 2.5. Check current disk space usage of your root device
-	See 2.4
+	[root@vm01 vit]# df -h | grep centos
+	/dev/mapper/centos_vm01-root	6.2G	5.0G	1.3G	80%
 2.6. Extend your root device filesystem to be able to use additional free space of root LV
-	??
+	We use XFS fs.
+	[root@vm01 vit]# xfs_growfw -d /dev/centos_vm01/root
 2.7. Verify that after reboot your root device is still 1GB bigger than at 2.5.
-	??
+	[root@vm01 vit]# df -h | grep centos
+	/dev/mapper/centos_vm01-root	7.2G	5.0G	2.3G	69%
