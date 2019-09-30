@@ -53,7 +53,7 @@ Also imagine your system started experiencing RAM leak in one of the application
 1.5. Configure the newly created XFS file system to persistently mount at /backup
 	Add to /etc/fstab
 	/dev/sdc1 /backup        xfs     defaults        0 0
-	
+	/dev/sdc2 swap	swap	defaults	0 0
 	mkdir /backup
 	mount -a
 	[root@vm01 vit]# lsblk
