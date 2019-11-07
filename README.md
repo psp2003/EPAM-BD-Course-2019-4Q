@@ -22,3 +22,5 @@ Tasks
   - HW8.1 Malasherifov Vitalii - Task 1 & 2
 ## 9. Partitions, LVM
   - HW9.1 Malasherifov Vitalii - Task 1 & 2(uc)
+## 10. Python
+  - HW10.1-3 Malasherifov Vitalii - Tasks 1-3 (w/o *)
