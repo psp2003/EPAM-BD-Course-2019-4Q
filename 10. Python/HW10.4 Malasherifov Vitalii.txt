@@ -1,11 +1,42 @@
-•	**Inherit class NoizyDog from Dog class, modify bark method so then it called dog bark continually and each bark must be printed from new line.
 Task 4**
 For this task you need to have docker daemon installed and running.
+Before:
+	Add to /lib/systemd/system/docker.service:
+		-H unix:// -H tcp://0.0.0.0:2019 #To ExecStart ends
+		
+Python script:
+
+#! /usr/bin/python3
+import sys
+import requests
+import json
+
+filters = {
+        'status': ['dead', ]
+}
+
+container_info=requests.get("%s/containers/json?all=1" % sys.argv[1])
+image_info=requests.get("%s/images/json?all=1" % sys.argv[1])
+
+for status in ('created', 'restarting', 'running', 'paused', 'exited', 'dead'):
+        print('Containers with status: %s' % status)
+        status_filters = {
+                'status': [status, ]
+        }
+        for container in requests.get("{}/containers/json?all=1&filters={}".format(sys.argv[1], json.dumps(status_filters))).json():
+                print('Id: {}\tName: {}\tImage: {}'.format(container['Id'], container['Names'][0][1:], container['Image']))
+print('\nImages:')
+for image in image_info.json():
+    print('Id: {}\tSize: {}\tTags: {}'.format(image['Id'], image['Size'], image['RepoTags']))
+
+
+
+
 The task is to create a python script, that has following functions:
-1.	connects to docker API and print a warning message if there are dead or stopped containers with their ID and name.
-2.	containers list, similar to docker ps -a
-3.	image list, similar to docker image ls
-4.	container information, like docker inspect
+1(done).	connects to docker API and print a warning message if there are dead or stopped containers with their ID and name.
+2(done).	containers list, similar to docker ps -a
+3(done).	image list, similar to docker image ls
+4(??).	container information, like docker inspect
 Connection function must accept connection string for example 'http://192.168.56.101:2376' and connect to it or use string from environment if no connection string is given.
 
 In order to connect to docker, you can use either Unix socket or reconfigure daemon to use a network socket (https://success.docker.com/article/how-do-i-enable-the-remote-api-for-dockerd)
