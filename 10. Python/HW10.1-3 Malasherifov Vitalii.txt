@@ -57,4 +57,9 @@ class Dog(object):
 	smart.gitpaw()
 		Paw pat
 
-
+**Inherit class NoizyDog from Dog class, modify bark method so then it called dog bark continually and each bark must be printed from new line.
+	class NoizyDog(Dog):
+	  def bark(self):
+		c=1
+		while c>0:
+		  print ('BARK!!!')
