@@ -1,0 +1,52 @@
+- hosts: hw-ansible
+  tasks:
+
+  - name: Create user+ssh-keys 
+    user:
+      name: ansible
+      group: wheel
+      generate_ssh_key: yes
+      ssh_key_bits: 2048
+      ssh_key_file: .ssh/id_rsa
+
+  - name: copying ssh-keys
+    authorized_key:
+      user: ansible
+      key: "{{lookup('file', '/home/ansible/.ssh/id_rsa.pub') }}"
+
+  - name: updates all packages on the systems
+    yum:
+      name=*
+      state=latest
+
+#install epel-release for nginx
+  - name: dload MySQL
+    get_url:
+      url: https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
+      dest: /root/mysql.rpm
+
+  - name: install ntp, nginx, MySQL
+    yum:
+      name:
+        - epel-release
+        - ntp
+        - nginx
+        - /root/mysql.rpm
+        - mysql-server
+      state: present
+    
+#iburst for accuracy
+  - name: replace ntp config
+    blockinfile:
+      path: /etc/ntp.conf
+      block: |
+        server ntp2.stratum2.ru iburst
+
+#Before doing operation with MySQL, reset pass on MySQL
+  - name: Reset pass on MySQL
+    shell: systemctl stop mysqld && echo "UPDATE mysql.user SET password='123456789_RoOt' WHERE user='root';" >> /root/init && systemctl start mysqld
+      
+#  - name: create mysql database
+
+#  - name: create mysql user
+
