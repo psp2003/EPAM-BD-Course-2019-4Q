@@ -22,3 +22,7 @@ Tasks
   - HW8.1 Malasherifov Vitalii - Task 1 & 2
 ## 9. Partitions, LVM
   - HW9.1 Malasherifov Vitalii - Task 1 & 2(uc)
+  
+## 11. Ansible
+  - HW11 HW11 Malasherifov Vitalii - Tasks w/o *
+  - playbook.yml - Playbook for ansible
